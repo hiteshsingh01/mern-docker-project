@@ -1,6 +1,3 @@
-### **README.md**
-
-```markdown
 # MERN Docker Project
 
 A full-stack MERN (MongoDB, Express, React, Node.js) application fully containerized with Docker and Docker Compose for easy development and deployment.
@@ -105,20 +102,3 @@ docker compose down
 * GitHub: [hiteshsingh01](https://github.com/hiteshsingh01)
 
 ````
-
----
-
-Aap bas:  
-
-1. Repo root me jao  
-2. `README.md` create karo  
-3. Upar ka content paste karo  
-4. Commit & push karo:
-
-```bash
-git add README.md
-git commit -m "Add README"
-git push origin main
-````
-
----
