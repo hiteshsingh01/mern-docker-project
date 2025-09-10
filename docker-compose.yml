@@ -55,6 +55,7 @@ services:
       POSTGRES_DB: mydb
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
     networks:
       - appnet
 
@@ -69,6 +70,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysqldata:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     networks:
       - appnet
 
