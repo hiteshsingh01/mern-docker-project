@@ -1,0 +1,81 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "3010:80"
+    depends_on:
+      - backend
+    networks:
+      - appnet
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8900:8900"
+    environment:
+      - PORT=8900
+      - MONGO_URI=mongodb://zentek:ZentekPass123!@mongo:27017/mydb?authSource=admin
+      - PGHOST=postgres
+      - PGUSER=pguser
+      - PGPASSWORD=pgpassword
+      - PGDATABASE=mydb
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysql_password
+      - MYSQL_DATABASE=mydb
+    depends_on:
+      - mongo
+      - postgres
+      - mysql
+    networks:
+      - appnet
+
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    networks:
+      - appnet
+
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - appnet
+
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlrootpassword
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysql_password
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - appnet
+
+volumes:
+  mongo_data:
+  pgdata:
+  mysqldata:
+
+networks:
+  appnet:
